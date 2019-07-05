@@ -70,7 +70,7 @@ def read(path):
       if 'Mean' in c:
          df = df.drop(c, axis=1)
    df = pd.melt(df, id_vars=['atom', 'resid'])
-   df['method']=path
+   df['method']=path.split('/')[-1]
    return df
 
 
