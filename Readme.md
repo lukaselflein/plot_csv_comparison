@@ -11,4 +11,4 @@ This mini-project plots the .csv tables containing optimized charges from differ
 * The plots are in `img`
 
 ## Sample
-![Plot with Boxes and Points](img/point_box)
+![Plot with Boxes and Points](img/point_box.png?raw=true)
