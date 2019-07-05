@@ -41,7 +41,7 @@ def make_edgecolor(ax, color=None):
 
 @default_style
 def boxplot(df):
-   bp = sns.boxplot(x='value', y='atom', hue='method', data=df, whis=100)#, hue='variable')
+   bp = sns.boxplot(x='Charges', y='Atom_Names', hue='Method', data=df, whis=100)#, hue='variable')
    ax = bp.axes
    make_edgecolor(ax)
    bp.figure.savefig('img/box.png')
@@ -49,18 +49,25 @@ def boxplot(df):
 
 @default_style
 def point_box_plot(box_df, point_df):
-   bp = sns.boxplot(x='value', y='atom', hue='method', data=box_df, whis=100)#, hue='variable')
-   nr_box_colors = len(box_df.method.unique())
+   nr_point_colors = len(point_df.Method.unique())
+   palette = [(0, 0, 0)] + sns.color_palette()
+   markers = ['o', 'D']
+   pp = sns.pointplot(x='Charges', y='Atom_Names', data=point_df, scale=0.7,
+                      join=False, hue='Method', ci=None, dodge=0.7, 
+                      palette=palette, markers=markers)
+   bp = sns.boxplot(x='Charges', y='Atom_Names', hue='Method', data=box_df, whis=100,
+                    palette=palette[nr_point_colors:])
    ax = bp.axes
    make_edgecolor(ax)
-   pp = sns.pointplot(x='value', y='atom', data=point_df, scale=0.7,
-                      join=False, hue='method', ci=None, dodge=0.7, 
-                      palette=sns.color_palette()[nr_box_colors:])
+   plt.gca().invert_yaxis()
+   handles, labels = ax.get_legend_handles_labels()
+   labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+   ax.legend(handles, labels)
    bp.figure.savefig('img/point_box.png')
 
 
 def swarmplot(df):   
-   bp = sns.swarmplot(x='value', y='atom', hue='method', data=df)#, hue='variable')
+   bp = sns.swarmplot(x='Charges', y='Atom_Names', hue='Method', data=df)#, hue='variable')
    bp.figure.savefig('img/swarm.png')
 
 
@@ -70,7 +77,9 @@ def read(path):
       if 'Mean' in c:
          df = df.drop(c, axis=1)
    df = pd.melt(df, id_vars=['atom', 'resid'])
-   df['method']=path.split('/')[-1]
+   df['Method']=path.split('/')[-1]
+   df = df.rename(index=str, columns={'atom': 'Atom_Names', 'charges': 'Charges', 
+                                      'value': 'Charges'})
    return df
 
 
@@ -84,15 +93,15 @@ def main():
    con_df = read('data/const_with_average.csv')
    unc_df = read('data/unconst_with_average.csv')
 
-   dfs = [atb_df, avg_df, con_df, unc_df]
-
-   df = bader_df
-   for next_df in dfs:
-      df = df.append(next_df)
+   #dfs = [atb_df, avg_df, con_df, unc_df]
+   #
+   #df = bader_df
+   #for next_df in dfs:
+   #   df = df.append(next_df)
 
    print('Plotting ...')
-   boxplot(df)
-   swarmplot(df)
+   #boxplot(df)
+   #swarmplot(df)
 
    point_df = atb_df.append(avg_df)
    box_df = con_df.append(unc_df)
