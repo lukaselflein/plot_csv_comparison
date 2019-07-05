@@ -77,7 +77,7 @@ def read(path):
       if 'Mean' in c:
          df = df.drop(c, axis=1)
    df = pd.melt(df, id_vars=['atom', 'resid'])
-   df['Method']=path.split('/')[-1]
+   df['Method']=path.split('/')[-1][:-4]
    df = df.rename(index=str, columns={'atom': 'Atom_Names', 'charges': 'Charges', 
                                       'value': 'Charges'})
    return df
