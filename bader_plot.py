@@ -12,7 +12,7 @@ import seaborn as sns
 def default_style(func):
    """A decorator for setting global plotting styling options."""
    def wrapper(*args, **kwargs):
-      fig = plt.figure(figsize=(16,10))
+      fig = plt.figure(figsize=(18,18))
       sns.set_context("talk", font_scale=0.9)
       plt.xlim(-3, 3)
       plt.tick_params(grid_alpha=0.2)
@@ -44,6 +44,8 @@ def boxplot(df):
    bp = sns.boxplot(x='value', y='atom', hue='method', data=df, whis=100)#, hue='variable')
    ax = bp.axes
    make_edgecolor(ax)
+   x1,x2,y1,y2 = plt.axis()
+   plt.axis((x1,x2,y1 - 10 ,y2 + 10))
    bp.figure.savefig('img/bader_box.png')
 
 

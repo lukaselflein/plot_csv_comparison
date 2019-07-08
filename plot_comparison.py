@@ -12,8 +12,8 @@ import seaborn as sns
 def default_style(func):
    """A decorator for setting global plotting styling options."""
    def wrapper(*args, **kwargs):
-      fig = plt.figure(figsize=(16,10))
-      sns.set_context("talk", font_scale=0.9)
+      fig = plt.figure(figsize=(18,18))
+      sns.set_context("talk", font_scale=1.1)
       plt.xlim(-3, 3)
       plt.tick_params(grid_alpha=0.2)
       func(*args, **kwargs)
@@ -63,6 +63,8 @@ def point_box_plot(box_df, point_df):
    handles, labels = ax.get_legend_handles_labels()
    labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
    ax.legend(handles, labels)
+   x1,x2,y1,y2 = plt.axis()
+   plt.axis((x1,x2,y1 - 1 ,y2 + 1))
    bp.figure.savefig('img/point_box.png')
 
 
