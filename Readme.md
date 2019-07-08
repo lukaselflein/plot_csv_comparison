@@ -8,7 +8,7 @@ This mini-project plots the .csv tables containing optimized charges from differ
 * module load devel/python/3.6.5
 * python plot.py
 * python bader_plot.py
-* The plots are in `img`
+* The plots are located in `img`
 
 ## Sample
 ![Plot with Boxes and Points](img/point_box.png?raw=true)
